@@ -60,3 +60,5 @@ Also, look at the `doc` folder at the root of this repository!
 We want to leave the possibility to other people to work on this project, to improve it and to make it grow, that's why we decided to place it under MIT license.
 
 > Read more about the [MIT licence](https://opensource.org/licenses/MIT).
+
+
