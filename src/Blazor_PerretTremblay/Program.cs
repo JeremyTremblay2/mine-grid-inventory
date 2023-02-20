@@ -1,3 +1,4 @@
+using Blazor_PerretTremblay.Services;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
@@ -15,6 +16,8 @@ builder.Services
    .AddBlazorise()
    .AddBootstrapProviders()
    .AddFontAwesomeIcons();
+
+builder.Services.AddScoped<IDataService, DataLocalService>();
 
 var app = builder.Build();
 
