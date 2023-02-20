@@ -52,7 +52,7 @@ Also, look at the `doc` folder at the root of this repository!
 
 **Louis PERRET**
 
-* [@Louis Perret](https://github.com/louis-perret)
+* Github: [@Louis Perret](https://github.com/louis-perret)
 * LinkedIn: [@Louis Perret](https://fr.linkedin.com/in/louis-perret-a67a6321b)
 
 ## 📝 License
