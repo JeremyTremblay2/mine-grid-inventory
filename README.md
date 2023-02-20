@@ -1,4 +1,4 @@
-<h1 align="center">🎳 Bowling Scorer API 🎳</h1>
+<h1 align="center">🧱⛏ Mine Grid Inventory ⛏🧱</h1>
 
 The goal of this project is to develop an inventory simulator in .NET / Blazor Server for a famous game with blocks and mining.
 
