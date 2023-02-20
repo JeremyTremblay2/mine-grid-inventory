@@ -17,6 +17,10 @@ steps:
   - name: code-analysis
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dronesonarplugin-dotnet6
     commands:
+      - export PATH="$PATH:/root/.dotnet/tools"
+      - dotnet tool install --global dotnet-sonarscanner
+      - dotnet tool install --global dotnet-reportgenerator-globaltool
+      - apt-get update && apt-get install -y openjdk-17-jre
       - cd src/
       - dotnet restore Blazor_PerretTremblay
       - dotnet sonarscanner begin /k:$Blazor_PerretTremblay /d:sonar.host.url=$$$${PLUGIN_SONAR_HOST} /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions="Tests/**" /d:sonar.login=$$$${PLUGIN_SONAR_TOKEN}
