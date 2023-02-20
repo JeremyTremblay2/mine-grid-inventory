@@ -1,8 +1,13 @@
-﻿@page "/add"
+﻿@page "/edit/{Id:int}"
 
-<h3>Add</h3>
+<h3>Edit</h3>
 
-<EditForm>
+<div>Mon paramètre: @Id</div>
+
+<EditForm Model="@itemModel" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
     <p>
         <label for="display-name">
             Display name:
@@ -33,7 +38,7 @@
             @foreach (var item in enchantCategories)
             {
                 <label>
-                    <input type="checkbox" @onchange="@(e => OnEnchantCategoriesChange(item, e.Value))" />@item
+                    <input type="checkbox" @onchange="@(e => OnEnchantCategoriesChange(item, e.Value))" checked="@(itemModel.EnchantCategories.Contains(item) ? "checked" : null)" />@item
                 </label>
             }
         </div>
@@ -44,10 +49,23 @@
             @foreach (var item in repairWith)
             {
                 <label>
-                    <input type="checkbox" @onchange="@(e => OnRepairWithChange(item, e.Value))" />@item
+                    <input type="checkbox" @onchange="@(e => OnRepairWithChange(item, e.Value))" checked="@(itemModel.RepairWith.Contains(item) ? "checked" : null)" />@item
                 </label>
             }
         </div>
+    </p>
+    <p>
+        <label>
+            Current Item image:
+            @if (File.Exists($"{WebHostEnvironment.WebRootPath}/images/{itemModel.Name}.png"))
+            {
+                <img src="images/@(itemModel.Name).png" class="img-thumbnail" title="@itemModel.DisplayName" alt="@itemModel.DisplayName" style="max-width: 150px" />
+            }
+            else
+            {
+                <img src="images/default.png" class="img-thumbnail" title="@itemModel.DisplayName" alt="@itemModel.DisplayName" style="max-width: 150px" />
+            }
+        </label>
     </p>
     <p>
         <label>

@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using Blazor_PerretTremblay.Services;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
@@ -37,6 +38,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedCultures = new List<CultureInfo> { new CultureInfo("en-US"), new CultureInfo("fr-FR") };
     options.SupportedUICultures = new List<CultureInfo> { new CultureInfo("en-US"), new CultureInfo("fr-FR") };
 });
+
+builder.Services.AddScoped<IDataService, DataLocalService>();
 
 var app = builder.Build();
 
