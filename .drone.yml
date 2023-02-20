@@ -13,3 +13,23 @@ steps:
       - cd src/
       - dotnet restore Blazor_PerretTremblay
       - dotnet build Blazor_PerretTremblay -c Release --no-restore
+
+  - name: code-analysis
+    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dronesonarplugin-dotnet6
+    commands:
+      - cd Sources/
+      - dotnet restore Blazor_PerretTremblay
+      - dotnet sonarscanner begin /k:$REPO_NAME /d:sonar.host.url=$$$${PLUGIN_SONAR_HOST} /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions="Tests/**" /d:sonar.login=$$$${PLUGIN_SONAR_TOKEN} 
+      - dotnet build Blazor_PerretTremblay -c Release --no-restore
+      - dotnet test Blazor_PerretTremblay --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage"
+      - reportgenerator -reports:"**/coverage.cobertura.xml" -reporttypes:SonarQube -targetdir:"coveragereport"
+      - dotnet publish Blazor_PerretTremblay -c Release --no-restore -o $CI_PROJECT_DIR/build/release
+      - dotnet sonarscanner end /d:sonar.login=$$$${PLUGIN_SONAR_TOKEN}
+    secrets: [ Blazor_PerretTremblay ]
+    settings:
+      # accessible en ligne de commande par $${PLUGIN_SONAR_HOST}
+      sonar_host: https://codefirst.iut.uca.fr/sonar/
+      # accessible en ligne de commande par $${PLUGIN_SONAR_TOKEN}
+      sonar_token:
+        from_secret: Blazor_PerretTremblay
+    depends_on: [build]
