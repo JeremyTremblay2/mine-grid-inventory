@@ -17,7 +17,7 @@ steps:
   - name: code-analysis
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dronesonarplugin-dotnet6
     commands:
-      - cd Sources/
+      - cd src/
       - dotnet restore Blazor_PerretTremblay
       - dotnet sonarscanner begin /k:$REPO_NAME /d:sonar.host.url=$$$${PLUGIN_SONAR_HOST} /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions="Tests/**" /d:sonar.login=$$$${PLUGIN_SONAR_TOKEN} 
       - dotnet build Blazor_PerretTremblay -c Release --no-restore
