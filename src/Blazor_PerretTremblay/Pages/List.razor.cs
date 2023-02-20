@@ -1,4 +1,5 @@
 ﻿using Blazor_PerretTremblay.Models;
+using Blazor_PerretTremblay.Services;
 using Blazorise.DataGrid;
 using Microsoft.AspNetCore.Components;
 
@@ -16,9 +17,26 @@ namespace Blazor_PerretTremblay.Pages
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
+        [Inject]
+        public IDataService DataService { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             items = await Http.GetFromJsonAsync<Item[]>($"{NavigationManager.BaseUri}fake-data.json");
+        }
+
+        private async Task OnReadData(DataGridReadDataEventArgs<Item> e)
+        {
+            if (e.CancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+
+            if (!e.CancellationToken.IsCancellationRequested)
+            {
+                items = await DataService.List(e.Page, e.PageSize);
+                totalItem = await DataService.Count();
+            }
         }
 
         private async Task OnReadData(DataGridReadDataEventArgs<Item> e)
