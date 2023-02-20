@@ -1,0 +1,15 @@
+kind: pipeline
+type: docker
+name: default
+ 
+trigger:
+  event:
+    - push
+
+steps:
+  - name: build
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    commands:
+      - cd src/
+      - dotnet restore Blazor_PerretTremblay
+      - dotnet build Blazor_PerretTremblay -c Release --no-restore
