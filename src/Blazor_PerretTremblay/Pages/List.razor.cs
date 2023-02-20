@@ -28,8 +28,11 @@ namespace Blazor_PerretTremblay.Pages
                 return;
             }
 
+<<<<<<< Updated upstream
             // When you use a real API, we use this follow code
             //var response = await Http.GetJsonAsync<Item[]>( $"http://my-api/api/data?page={e.Page}&pageSize={e.PageSize}" );
+=======
+>>>>>>> Stashed changes
             var response = (await Http.GetFromJsonAsync<Item[]>($"{NavigationManager.BaseUri}fake-data.json"))
                 .Skip((e.Page - 1) * e.PageSize)
                 .Take(e.PageSize)
