@@ -1,4 +1,5 @@
 ﻿using Blazor_PerretTremblay.Models;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 
 namespace Blazor_PerretTremblay.Services

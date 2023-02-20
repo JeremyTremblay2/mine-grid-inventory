@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Blazor_PerretTremblay.Services;
 using Blazorise;
 using Blazorise.Bootstrap;
@@ -11,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddHttpClient();
+builder.Services.AddBlazoredLocalStorage();
 
 builder.Services
    .AddBlazorise()

@@ -1,6 +1,7 @@
-﻿using Blazor_PerretTremblay.Services;
-using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components;
+using Blazor_PerretTremblay.Models;
+using Blazor_PerretTremblay.Services;
 
 namespace Blazor_PerretTremblay.Pages
 {
