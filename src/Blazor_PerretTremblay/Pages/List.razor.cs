@@ -1,4 +1,5 @@
 ﻿using Blazor_PerretTremblay.Models;
+using Blazored.LocalStorage;
 using Blazorise.DataGrid;
 using Microsoft.AspNetCore.Components;
 
@@ -6,7 +7,7 @@ namespace Blazor_PerretTremblay.Pages
 {
     public partial class List
     {
-        private Item[] items;
+        private List<Item> items;
 
         private int totalItem;
 
@@ -14,11 +15,31 @@ namespace Blazor_PerretTremblay.Pages
         public HttpClient Http { get; set; }
 
         [Inject]
+        public ILocalStorageService LocalStorage { get; set; }
+
+        [Inject]
+        public IWebHostEnvironment WebHostEnvironment { get; set; }
+
+        [Inject]
         public NavigationManager NavigationManager { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            items = await Http.GetFromJsonAsync<Item[]>($"{NavigationManager.BaseUri}fake-data.json");
+            // Do not treat this action if is not the first render
+            if (!firstRender)
+            {
+                return;
+            }
+
+            var currentData = await LocalStorage.GetItemAsync<Item[]>("data");
+
+            // Check if data exist in the local storage
+            if (currentData == null)
+            {
+                // this code add in the local storage the fake data (we load the data sync for initialize the data before load the OnReadData method)
+                var originalData = Http.GetFromJsonAsync<Item[]>($"{NavigationManager.BaseUri}fake-data.json").Result;
+                await LocalStorage.SetItemAsync("data", originalData);
+            }
         }
 
         private async Task OnReadData(DataGridReadDataEventArgs<Item> e)
@@ -29,16 +50,13 @@ namespace Blazor_PerretTremblay.Pages
             }
 
             // When you use a real API, we use this follow code
-            //var response = await Http.GetJsonAsync<Item[]>( $"http://my-api/api/data?page={e.Page}&pageSize={e.PageSize}" );
-            var response = (await Http.GetFromJsonAsync<Item[]>($"{NavigationManager.BaseUri}fake-data.json"))
-                .Skip((e.Page - 1) * e.PageSize)
-                .Take(e.PageSize)
-                .ToList();
+            //var response = await Http.GetJsonAsync<Data[]>( $"http://my-api/api/data?page={e.Page}&pageSize={e.PageSize}" );
+            var response = (await LocalStorage.GetItemAsync<Item[]>("data")).Skip((e.Page - 1) * e.PageSize).Take(e.PageSize).ToList();
 
             if (!e.CancellationToken.IsCancellationRequested)
             {
-                totalItem = (await Http.GetFromJsonAsync<List<Item>>($"{NavigationManager.BaseUri}fake-data.json")).Count;
-                items = new List<Item>(response).ToArray(); // an actual data for the current page
+                totalItem = (await LocalStorage.GetItemAsync<List<Item>>("data")).Count;
+                items = new List<Item>(response); // an actual data for the current page
             }
         }
     }
