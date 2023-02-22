@@ -1,0 +1,6 @@
+﻿.css-grid {
+    grid-template-columns: repeat(6,minmax(0,1fr));
+    grid-column-gap:80px;
+    display: grid;
+    width: 286px;
+}
