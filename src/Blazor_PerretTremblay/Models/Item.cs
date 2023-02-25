@@ -1,6 +1,6 @@
 ﻿namespace Blazor_PerretTremblay.Models
 {
-    public class Item
+    public class Item : IEquatable<Item?>
     {
         public int Id { get; set; }
         public string DisplayName { get; set; }
@@ -17,5 +17,15 @@
             DisplayName = "Bench";
         }
 
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Item);
+        }
+
+        public bool Equals(Item? other)
+        {
+            return other is not null &&
+                   Id == other.Id;
+        }
     }
 }

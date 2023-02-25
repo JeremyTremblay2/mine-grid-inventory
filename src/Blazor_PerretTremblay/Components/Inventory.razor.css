@@ -4,3 +4,8 @@
     display: grid;
     width: 286px;
 }
+
+.inventory {
+    display: flex;
+    flex-direction: row;
+}
