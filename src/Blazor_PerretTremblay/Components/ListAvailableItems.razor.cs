@@ -74,15 +74,12 @@ namespace Blazor_PerretTremblay.Components
         private void OnDragStart()
         {
             Parent.CurrentDragItem = currentSelectedItem;
-
+            Parent.IsDragBetweenInventoryAndInventory = false;
+            Parent.IsDragBetweenListAndInventory = true;
+            Parent.CurrentIndexOfCurrentDragItem = -1;
             Parent.Actions.Add(new InventoryAction { Action = "Drag Start", Item = currentSelectedItem }); ;
         }
 
-        private void OnDragEnd()
-        {
-            Parent.CurrentDragItem = null;
-            currentSelectedItem = null;
-        }
         private void RowUpdated(Item newRow)
         {
             currentSelectedItem = newRow;

@@ -11,17 +11,12 @@
         public List<string> RepairWith { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
-        public Item()
-        {
-            Name = "Bench";
-            DisplayName = "Bench";
-        }
 
         public override bool Equals(object? obj)
         {
             return Equals(obj as Item);
         }
-
+ 
         public bool Equals(Item? other)
         {
             return other is not null &&

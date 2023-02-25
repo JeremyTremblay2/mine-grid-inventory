@@ -6,7 +6,8 @@ namespace Blazor_PerretTremblay.Components
 {
     public partial class ItemInventory
     {
-        private int Number = 0;
+        [Parameter]
+        public int Number { get; set; } = 0;
 
         [Parameter]
         public int Index { get; set; }
@@ -29,47 +30,55 @@ namespace Blazor_PerretTremblay.Components
         [CascadingParameter]
         public Inventory Parent { get; set; }
 
-        internal void OnDragEnter()
-        {
-            if (NoDrop)
-            {
-                return;
-            }
-        }
-
         internal void OnDragLeave()
         {
-            if (NoDrop)
+            if (Parent.IsDragBetweenListAndInventory || (Item != null && !this.Item.Equals(Parent.CurrentDragItem)))
             {
                 return;
             }
 
-            Parent.DeleteItem(Item);
+            Item = null;
+            Number = 0;
+            Parent.DeleteItem(Index);
         }
 
         internal void OnDrop()
         {
-            if (NoDrop)
-            {
-                return;
-            }
-            
             if(this.Item == null)
             {
                 Item = Parent.CurrentDragItem;
+                Parent.AddItem(Item, Index);
+                if (Parent.CurrentIndexOfCurrentDragItem < 0)
+                    Number = 1;
+                else
+                {
+                    Number += Parent.ListNumberOfItemsByIndex.ElementAt(Parent.CurrentIndexOfCurrentDragItem);
+                    Parent.ListNumberOfItemsByIndex.Insert(Parent.CurrentIndexOfCurrentDragItem, 0);
+                }
             }
             else
             {
                 if(this.Item.Id == Parent.CurrentDragItem?.Id)
                 {
-                    Number++;
+                    if (Parent.CurrentIndexOfCurrentDragItem < 0)
+                        Number++;
+                    else
+                    {
+                        Number += Parent.ListNumberOfItemsByIndex.ElementAt(Parent.CurrentIndexOfCurrentDragItem);
+                        Parent.ListNumberOfItemsByIndex.Insert(Parent.CurrentIndexOfCurrentDragItem, 0);
+                    }
                 }
             }
+
+            Parent.ListNumberOfItemsByIndex.Insert(Index, Number);
         }
 
         private void OnDragStart()
         {
             Parent.CurrentDragItem = this.Item;
+            Parent.IsDragBetweenInventoryAndInventory = true;
+            Parent.IsDragBetweenListAndInventory = false;
+            Parent.CurrentIndexOfCurrentDragItem = Index;
         }
     }
 }
