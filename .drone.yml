@@ -6,7 +6,7 @@ trigger:
   event:
     - push
 
-steps:
+steps: 
   - name: build
     image: mcr.microsoft.com/dotnet/sdk:6.0
     commands:
@@ -18,9 +18,9 @@ steps:
   - name: tests
     image: mcr.microsoft.com/dotnet/sdk:6.0
     commands:
-      - cd src/
+      - cd Minecraft.Crafting/
       - dotnet restore Minecraft.Crafting.sln
-      - dotnet test Minecraft.Crafting.sln -c Release --no-restore
+      - dotnet test Minecraft.Crafting.sln --no-restore
     depends_on: [build]
 
   - name: code-analysis
@@ -28,10 +28,10 @@ steps:
     commands:
       - cd src/
       - dotnet restore Minecraft.Crafting.sln
-      - dotnet sonarscanner begin /k:Minecraft.Crafting /d:sonar.host.url=$${PLUGIN_SONAR_HOST} /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions="Tests/**" /d:sonar.login=$${PLUGIN_SONAR_TOKEN}
+      - dotnet sonarscanner begin /k:Minecraft.Crafting /d:sonar.host.url=$${PLUGIN_SONAR_HOST} /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions="Tests/**" /d:sonar.login=$${PLUGIN_SONAR_TOKEN} 
       - dotnet build Minecraft.Crafting.sln -c Release --no-restore
       - dotnet test Minecraft.Crafting.sln --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage"
-      - reportgenerator -reports:$(build.SourcesDirectory)/TestResults/Coverage/coverage.cobertura.xml -reporttypes:SonarQube -targetdir:"coveragereport"
+      - reportgenerator -reports:"**/coverage.cobertura.xml" -reporttypes:SonarQube -targetdir:"coveragereport"
       - dotnet publish Minecraft.Crafting.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
       - dotnet sonarscanner end /d:sonar.login=$${PLUGIN_SONAR_TOKEN}
     secrets: [ SECRET_SONAR_LOGIN ]
@@ -42,6 +42,20 @@ steps:
       sonar_token:
         from_secret: SECRET_SONAR_LOGIN
     depends_on: [tests]
+
+  - name: generate-and-deploy-docs
+    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
+    failure: ignore
+    volumes:
+      - name: docs
+        path: /docs
+    commands:
+      - /entrypoint.sh
+    when:
+      branch:
+        - master
+    depends_on: [ build ]
+
 
 # The volumes declaration appear at the end of the file, after all steps
 volumes:
