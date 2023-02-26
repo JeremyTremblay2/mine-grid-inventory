@@ -1,4 +1,5 @@
-﻿using Blazor_PerretTremblay.Models;
+﻿using Blazor_PerretTremblay.Components;
+using Blazor_PerretTremblay.Models;
 
 namespace Blazor_PerretTremblay.Services
 {
@@ -15,5 +16,7 @@ namespace Blazor_PerretTremblay.Services
         Task Update(int id, ItemModel model);
 
         Task Delete(int id);
+
+        Task<List<CraftingRecipe>> GetRecipes();
     }
 }

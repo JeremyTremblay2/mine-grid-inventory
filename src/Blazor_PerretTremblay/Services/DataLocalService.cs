@@ -1,4 +1,5 @@
-﻿using Blazor_PerretTremblay.Models;
+﻿using Blazor_PerretTremblay.Components;
+using Blazor_PerretTremblay.Models;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 
@@ -33,21 +34,6 @@ namespace Blazor_PerretTremblay.Services
 
             // Add the item to the current data
             currentData.Add(ItemFactory.Create(model));
-
-            // Save the image
-            var imagePathInfo = new DirectoryInfo($"{_webHostEnvironment.WebRootPath}/images");
-
-            // Check if the folder "images" exist
-            if (!imagePathInfo.Exists)
-            {
-                imagePathInfo.Create();
-            }
-
-            // Determine the image name
-            var fileName = new FileInfo($"{imagePathInfo}/{model.Name}.png");
-
-            // Write the file content
-            await File.WriteAllBytesAsync(fileName.FullName, model.ImageContent);
 
             // Save the data
             await _localStorage.SetItemAsync("data", currentData);
@@ -116,32 +102,6 @@ namespace Blazor_PerretTremblay.Services
                 throw new Exception($"Unable to found the item with ID: {id}");
             }
 
-            // Save the image
-            var imagePathInfo = new DirectoryInfo($"{_webHostEnvironment.WebRootPath}/images");
-
-            // Check if the folder "images" exist
-            if (!imagePathInfo.Exists)
-            {
-                imagePathInfo.Create();
-            }
-
-            // Delete the previous image
-            if (item.Name != model.Name)
-            {
-                var oldFileName = new FileInfo($"{imagePathInfo}/{item.Name}.png");
-
-                if (oldFileName.Exists)
-                {
-                    File.Delete(oldFileName.FullName);
-                }
-            }
-
-            // Determine the image name
-            var fileName = new FileInfo($"{imagePathInfo}/{model.Name}.png");
-
-            // Write the file content
-            await File.WriteAllBytesAsync(fileName.FullName, model.ImageContent);
-
             // Modify the content of the item
             ItemFactory.Update(item, model);
 
@@ -160,17 +120,27 @@ namespace Blazor_PerretTremblay.Services
             // Delete item in
             currentData.Remove(item);
 
-            // Delete the image
-            var imagePathInfo = new DirectoryInfo($"{_webHostEnvironment.WebRootPath}/images");
-            var fileName = new FileInfo($"{imagePathInfo}/{item.Name}.png");
-
-            if (fileName.Exists)
-            {
-                File.Delete(fileName.FullName);
-            }
-
             // Save the data
             await _localStorage.SetItemAsync("data", currentData);
+        }
+
+        public Task<List<CraftingRecipe>> GetRecipes()
+        {
+            var items = new List<CraftingRecipe>
+        {
+            new CraftingRecipe
+            {
+                Give = new Item { DisplayName = "Diamond", Name = "diamond" },
+                Have = new List<List<string>>
+                {
+                    new List<string> { "dirt", "dirt", "dirt" },
+                    new List<string> { "dirt", null, "dirt" },
+                    new List<string> { "dirt", "dirt", "dirt" }
+                }
+            }
+        };
+
+            return Task.FromResult(items);
         }
     }
 }
