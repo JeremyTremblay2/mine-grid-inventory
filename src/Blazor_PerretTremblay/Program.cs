@@ -15,8 +15,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddHttpClient();
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddBlazoredModal();
+builder.Services.AddHttpClient();
 
 builder.Services
    .AddBlazorise()
@@ -40,9 +41,16 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedUICultures = new List<CultureInfo> { new CultureInfo("en-US"), new CultureInfo("fr-FR") };
 });
 
-builder.Services.AddScoped<IDataService, DataLocalService>();
+builder.Services.AddScoped<IDataService, DataApiService>();
 
-builder.Services.AddBlazoredModal();
+/*builder.Services.Configure<PositionOptions>(option =>
+{
+    var positionOptions = builder.Configuration.GetSection(PositionOptions.Position).Get<PositionOptions>();
+    option.Name = positionOptions.Name;
+    option.Title = positionOptions.Title;
+});*/
+
+builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
 
 var app = builder.Build();
 
@@ -55,9 +63,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
-
 app.UseRouting();
 
 // Get the current localization options
