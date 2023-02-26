@@ -18,7 +18,7 @@ steps:
   - name: tests
     image: mcr.microsoft.com/dotnet/sdk:6.0
     commands:
-      - cd Minecraft.Crafting/
+      - cd src/
       - dotnet restore Minecraft.Crafting.sln
       - dotnet test Minecraft.Crafting.sln --no-restore
     depends_on: [build]
