@@ -1,9 +1,11 @@
 ﻿using Blazor_PerretTremblay.Models;
 using Blazor_PerretTremblay.Pages;
+using Blazor_PerretTremblay.Services.DataInventoryService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace Blazor_PerretTremblay.Components
 {
@@ -24,14 +26,12 @@ namespace Blazor_PerretTremblay.Components
         /// <summary>
         /// List of all items contained in the inventory.
         /// </summary>
-        [Parameter]
-        public List<Item> Items { get; set; }
+        public IList<Item> Items { get; set; }
 
         /// <summary>
         /// List of all number of each items in the inventory.
         /// </summary>
-        [Parameter]
-        public List<int> ListNumberOfItemsByIndex { get; set; }
+        public IList<int> ListNumberOfItemsByIndex { get; set; }
 
         public bool IsDragBetweenListAndInventory { get; set; }
         public bool IsDragBetweenInventoryAndInventory { get; set; }
@@ -42,16 +42,20 @@ namespace Blazor_PerretTremblay.Components
         [Inject]
         internal IJSRuntime JavaScriptRuntime { get; set; }
 
+        [Inject]
+        public IDataInventoryService DataInventoryService { get; set; }
 
         public Inventory()
         {
             Actions = new ObservableCollection<InventoryAction>();
             Actions.CollectionChanged += OnActionsCollectionChanged;
-            ListNumberOfItemsByIndex = new List<int>(InventoryPage.NBMAXITEM);
-            for (int i=0; i < InventoryPage.NBMAXITEM; i++)
-            {
-                ListNumberOfItemsByIndex.Add(0);
-            }
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            Items = await DataInventoryService.GetAllItems();
+            ListNumberOfItemsByIndex = await DataInventoryService.GetListNumberOfItems();
+            await base.OnInitializedAsync();
         }
 
         private void OnActionsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -67,6 +71,10 @@ namespace Blazor_PerretTremblay.Components
         public void DeleteItem(int index)
         {
             Items.Insert(index, new Item());
+        }
+        public async Task SaveInventory()
+        {
+            await DataInventoryService.SaveInventory(Items, ListNumberOfItemsByIndex);
         }
     }
 }

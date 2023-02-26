@@ -1,5 +1,4 @@
 using Blazored.LocalStorage;
-using Blazor_PerretTremblay.Services;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
@@ -9,6 +8,8 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using System.Globalization;
 using Blazored.Modal;
+using Blazor_PerretTremblay.Services.DataItemsService;
+using Blazor_PerretTremblay.Services.DataInventoryService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +41,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedUICultures = new List<CultureInfo> { new CultureInfo("en-US"), new CultureInfo("fr-FR") };
 });
 
-builder.Services.AddScoped<IDataService, DataLocalService>();
+builder.Services.AddScoped<IDataItemsService, DataLocalService>();
+builder.Services.AddScoped<IDataInventoryService, DataLocalInventoryService>();
 
 builder.Services.AddBlazoredModal();
 

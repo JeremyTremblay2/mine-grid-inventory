@@ -1,6 +1,6 @@
 ﻿using Blazor_PerretTremblay.Modals;
 using Blazor_PerretTremblay.Models;
-using Blazor_PerretTremblay.Services;
+using Blazor_PerretTremblay.Services.DataItemsService;
 using Blazored.Modal;
 using Blazored.Modal.Services;
 using Blazorise;
@@ -19,7 +19,7 @@ namespace Blazor_PerretTremblay.Components
         private Item? currentSelectedItem;
 
         [Inject]
-        public IDataService DataService { get; set; }
+        public IDataItemsService DataService { get; set; }
 
         [Inject]
         public IWebHostEnvironment WebHostEnvironment { get; set; }

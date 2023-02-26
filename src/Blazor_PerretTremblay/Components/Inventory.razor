@@ -7,7 +7,7 @@
                 <div>
                     <div class="css-grid">
                         @for (int i = 0; i < InventoryPage.NBMAXITEM; i++){
-                            <ItemInventory Index="@i"/>
+                            <ItemInventory Index="@i" Item="@Items.ElementAt(i)" Number="@ListNumberOfItemsByIndex.ElementAt(i)"/>
                         }
                     </div>
                 </div>

@@ -1,8 +1,8 @@
 ﻿using Blazor_PerretTremblay.Models;
 
-namespace Blazor_PerretTremblay.Services
+namespace Blazor_PerretTremblay.Services.DataItemsService
 {
-    public interface IDataService
+    public interface IDataItemsService
     {
         Task Add(ItemModel model);
 

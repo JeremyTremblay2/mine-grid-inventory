@@ -1,4 +1,5 @@
 ﻿using Blazor_PerretTremblay.Models;
+using Blazor_PerretTremblay.Services.DataInventoryService;
 using Microsoft.AspNetCore.Components;
 using System.ComponentModel;
 
@@ -24,9 +25,6 @@ namespace Blazor_PerretTremblay.Components
             }
         }
 
-        [Parameter]
-        public bool NoDrop { get; set; }
-
         [CascadingParameter]
         public Inventory Parent { get; set; }
 
@@ -42,7 +40,7 @@ namespace Blazor_PerretTremblay.Components
             Parent.DeleteItem(Index);
         }
 
-        internal void OnDrop()
+        internal async void OnDrop()
         {
             if(this.Item == null)
             {
@@ -71,6 +69,7 @@ namespace Blazor_PerretTremblay.Components
             }
 
             Parent.ListNumberOfItemsByIndex.Insert(Index, Number);
+            await Parent.SaveInventory();
         }
 
         private void OnDragStart()

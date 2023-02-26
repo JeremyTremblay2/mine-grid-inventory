@@ -2,7 +2,10 @@
 
 <h3>Add</h3>
 
-<EditForm>
+<EditForm
+    Model="@itemModel" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
     <p>
         <label for="display-name">
             Display name:

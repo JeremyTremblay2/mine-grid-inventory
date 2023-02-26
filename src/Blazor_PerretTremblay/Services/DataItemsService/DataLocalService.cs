@@ -2,9 +2,9 @@
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 
-namespace Blazor_PerretTremblay.Services
+namespace Blazor_PerretTremblay.Services.DataItemsService
 {
-    public class DataLocalService : IDataService
+    public class DataLocalService : IDataItemsService
     {
         private readonly HttpClient _http;
         private readonly ILocalStorageService _localStorage;

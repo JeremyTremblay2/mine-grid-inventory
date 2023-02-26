@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components;
 using Blazor_PerretTremblay.Models;
-using Blazor_PerretTremblay.Services;
+using Blazor_PerretTremblay.Services.DataItemsService;
 
 namespace Blazor_PerretTremblay.Pages
 {
@@ -27,7 +27,7 @@ namespace Blazor_PerretTremblay.Pages
         private List<string> repairWith = new List<string>() { "oak_planks", "spruce_planks", "birch_planks", "jungle_planks", "acacia_planks", "dark_oak_planks", "crimson_planks", "warped_planks" };
 
         [Inject]
-        public IDataService DataService { get; set; }
+        public IDataItemsService DataService { get; set; }
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }

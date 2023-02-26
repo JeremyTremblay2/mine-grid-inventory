@@ -1,11 +1,11 @@
 ﻿using Blazor_PerretTremblay.Models;
 using Blazored.LocalStorage;
-using Blazor_PerretTremblay.Services;
 using Blazorise.DataGrid;
 using Microsoft.AspNetCore.Components;
 using Blazored.Modal.Services;
 using Blazor_PerretTremblay.Modals;
 using Blazored.Modal;
+using Blazor_PerretTremblay.Services.DataItemsService;
 
 namespace Blazor_PerretTremblay.Pages
 {
@@ -16,7 +16,7 @@ namespace Blazor_PerretTremblay.Pages
         private int totalItem;
 
         [Inject]
-        public IDataService DataService { get; set; }
+        public IDataItemsService DataService { get; set; }
 
         [Inject]
         public IWebHostEnvironment WebHostEnvironment { get; set; }

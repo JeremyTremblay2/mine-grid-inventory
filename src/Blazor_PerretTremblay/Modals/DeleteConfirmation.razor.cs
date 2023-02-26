@@ -1,8 +1,8 @@
 ﻿using Blazor_PerretTremblay.Models;
-using Blazor_PerretTremblay.Services;
 using Blazored.Modal.Services;
 using Blazored.Modal;
 using Microsoft.AspNetCore.Components;
+using Blazor_PerretTremblay.Services.DataItemsService;
 
 namespace Blazor_PerretTremblay.Modals
 {
@@ -12,7 +12,7 @@ namespace Blazor_PerretTremblay.Modals
         public BlazoredModalInstance ModalInstance { get; set; }
 
         [Inject]
-        public IDataService DataService { get; set; }
+        public IDataItemsService DataService { get; set; }
 
         [Parameter]
         public int Id { get; set; }
