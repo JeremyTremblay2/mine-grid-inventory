@@ -11,20 +11,21 @@ steps:
     image: mcr.microsoft.com/dotnet/sdk:6.0
     commands:
       - cd src/
-      - dotnet restore Blazor_PerretTremblay
-      - dotnet build Blazor_PerretTremblay -c Release --no-restore
+      - dotnet restore Minecraft.Crafting
+      - dotnet build Minecraft.Crafting -c Release --no-restore
+      - dotnet publish Minecraft.Crafting.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
 
   - name: code-analysis
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dronesonarplugin-dotnet6
     commands:
       - cd src/
-      - dotnet restore Blazor_PerretTremblay
-      - dotnet sonarscanner begin /k:$Blazor_PerretTremblay /d:sonar.host.url=$$$${PLUGIN_SONAR_HOST} /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions="Tests/**" /d:sonar.login=$$$${PLUGIN_SONAR_TOKEN}
-      - dotnet build Blazor_PerretTremblay -c Release --no-restore
-      - dotnet test Blazor_PerretTremblay --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage"
+      - dotnet restore Minecraft.Crafting
+      - dotnet sonarscanner begin /k:Minecraft.Crafting /d:sonar.host.url=$${PLUGIN_SONAR_HOST} /d:sonar.coverageReportPaths="coveragereport/SonarQube.xml" /d:sonar.coverage.exclusions="Tests/**" /d:sonar.login=$${PLUGIN_SONAR_TOKEN}
+      - dotnet build Minecraft.Crafting -c Release --no-restore
+      - dotnet test Minecraft.Crafting --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect "XPlat Code Coverage"
       - reportgenerator -reports:"**/coverage.cobertura.xml" -reporttypes:SonarQube -targetdir:"coveragereport"
-      - dotnet publish Blazor_PerretTremblay -c Release --no-restore -o $CI_PROJECT_DIR/build/release
-      - dotnet sonarscanner end /d:sonar.login=$$$${PLUGIN_SONAR_TOKEN}
+      - dotnet publish Minecraft.Crafting -c Release --no-restore -o $CI_PROJECT_DIR/build/release
+      - dotnet sonarscanner end /d:sonar.login=$${PLUGIN_SONAR_TOKEN}
     secrets: [ Blazor_PerretTremblay_token ]
     settings:
       # accessible en ligne de commande par $${PLUGIN_SONAR_HOST}
@@ -33,3 +34,16 @@ steps:
       sonar_token:
         from_secret: Blazor_PerretTremblay_token
     depends_on: [build]
+
+  - name: tests
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    commands:
+      - cd Minecraft.Crafting/
+      - dotnet restore Minecraft.Crafting.sln
+      - dotnet test Minecraft.Crafting.sln --no-restore
+    depends_on: [build]
+
+# The volumes declaration appear at the end of the file, after all steps
+volumes:
+- name: docs
+  temp: {} 
