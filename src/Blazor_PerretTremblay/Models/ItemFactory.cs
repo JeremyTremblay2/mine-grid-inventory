@@ -13,7 +13,8 @@
                 EnchantCategories = item.EnchantCategories,
                 MaxDurability = item.MaxDurability,
                 StackSize = item.StackSize,
-                ImageContent = imageContent
+                ImageContent = imageContent,
+                ImageBase64 = string.IsNullOrWhiteSpace(item.ImageBase64) ? Convert.ToBase64String(imageContent) : item.ImageBase64
             };
         }
 
@@ -28,7 +29,8 @@
                 EnchantCategories = model.EnchantCategories,
                 MaxDurability = model.MaxDurability,
                 StackSize = model.StackSize,
-                CreatedDate = DateTime.Now
+                CreatedDate = DateTime.Now,
+                ImageBase64 = Convert.ToBase64String(model.ImageContent)
             };
         }
 
@@ -41,6 +43,7 @@
             item.MaxDurability = model.MaxDurability;
             item.StackSize = model.StackSize;
             item.UpdatedDate = DateTime.Now;
+            item.ImageBase64 = Convert.ToBase64String(model.ImageContent);
         }
     }
 }
