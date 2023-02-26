@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components;
 using Blazored.Modal.Services;
 using Minecraft.Crafting.Modals;
 using Blazored.Modal;
+using Microsoft.Extensions.Localization;
 
 namespace Minecraft.Crafting.Pages
 {
@@ -26,6 +27,9 @@ namespace Minecraft.Crafting.Pages
 
         [CascadingParameter]
         public IModalService Modal { get; set; }
+
+        [Inject]
+        public IStringLocalizer<List> Localizer { get; set; }
 
         private async Task OnReadData(DataGridReadDataEventArgs<Item> e)
         {

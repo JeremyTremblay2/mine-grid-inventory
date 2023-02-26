@@ -2,6 +2,7 @@
 using Minecraft.Crafting.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Localization;
 
 namespace Minecraft.Crafting.Pages
 {
@@ -37,6 +38,9 @@ namespace Minecraft.Crafting.Pages
 
         [Inject]
         public IWebHostEnvironment WebHostEnvironment { get; set; }
+
+        [Inject]
+        public IStringLocalizer<List> Localizer { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

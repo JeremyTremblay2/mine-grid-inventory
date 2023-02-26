@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Minecraft.Crafting.Models;
 using Minecraft.Crafting.Services;
+using Microsoft.Extensions.Localization;
 
 namespace Minecraft.Crafting.Pages
 {
@@ -31,6 +32,9 @@ namespace Minecraft.Crafting.Pages
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        public IStringLocalizer<List> Localizer { get; set; }
 
         private async void HandleValidSubmit()
         {
