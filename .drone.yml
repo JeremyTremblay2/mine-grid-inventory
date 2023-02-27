@@ -58,4 +58,4 @@ steps:
 # The volumes declaration appear at the end of the file, after all steps
 volumes:
 - name: docs
-  temp: {} 
+  temp: {}
