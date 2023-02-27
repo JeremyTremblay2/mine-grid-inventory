@@ -28,7 +28,7 @@ namespace Minecraft.Crafting.Components
                 else
                 {
                     InventoryModel.NumberItem += Parent.InventoryModels.ElementAt(Parent.CurrentIndexOfCurrentDragItem).NumberItem;
-                    Parent.DeleteOlderItemInventory();
+                    await Parent.DeleteOlderItemInventory();
                 }
             }
             else
@@ -40,10 +40,12 @@ namespace Minecraft.Crafting.Components
                     else
                     {
                         InventoryModel.NumberItem += Parent.InventoryModels.ElementAt(Parent.CurrentIndexOfCurrentDragItem).NumberItem;
-                        Parent.DeleteOlderItemInventory();
+                        await Parent.DeleteOlderItemInventory();
                     }
                 }
             }
+
+            await Parent.UpdateInventoryModel(InventoryModel);
 
             //await Parent.SaveInventory();
         }
@@ -56,11 +58,11 @@ namespace Minecraft.Crafting.Components
             Parent.IsDragBetweenListAndInventory = false;
         }
 
-        private void OnDragEnd()
+        private async void OnDragEnd()
         {
             if (!Parent.IsDropped)
             {
-                Parent.DeleteOlderItemInventory();
+                await Parent.DeleteOlderItemInventory();
             }
             Parent.IsDropped = false;
             StateHasChanged();

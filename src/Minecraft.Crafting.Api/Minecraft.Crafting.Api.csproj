@@ -27,4 +27,8 @@
 		</Content>  
 	</ItemGroup>
     
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="Data\inventory.json" />
+	</ItemGroup>
+    
 </Project>

@@ -5,9 +5,10 @@ namespace MinecraftCrafting.Services.DataInventoryService
 {
     public interface IDataInventoryService
     {
-        public Task<IList<Item>> GetAllItems();
-        public Task<IList<int>> GetListNumberOfItems();
 
-        public Task SaveInventory(IList<Item> items, IList<int> listNumberOfItems);
+        public Task<List<InventoryModel>> GetInventory();
+        public Task AddInventoryModel(InventoryModel inventoryModel);
+        public Task UpdateInventoryModel(InventoryModel inventoryModel);
+
     }
 }

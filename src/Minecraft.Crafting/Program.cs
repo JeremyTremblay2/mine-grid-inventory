@@ -10,6 +10,7 @@ using System.Globalization;
 using Blazored.Modal;
 using MinecraftCrafting.Services.DataInventoryService;
 using Minecraft.Crafting.Services.DataItemsService;
+using Minecraft.Crafting.Services.DataInventoryService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,8 +43,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedUICultures = new List<CultureInfo> { new CultureInfo("en-US"), new CultureInfo("fr-FR") };
 });
 
-builder.Services.AddScoped<IDataInventoryService, DataLocalInventoryService>();
 builder.Services.AddScoped<IDataItemsService, DataApiService>();
+builder.Services.AddScoped<IDataInventoryService, DataApiInventoryService>();
 
 /*builder.Services.Configure<PositionOptions>(option =>
 {

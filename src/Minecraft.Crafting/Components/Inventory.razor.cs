@@ -7,11 +7,13 @@ using Minecraft.Crafting.Pages;
 using Minecraft.Crafting.Api.Models;
 using Item = Minecraft.Crafting.Api.Models.Item;
 using Blazorise;
+using Minecraft.Crafting.Services.DataItemsService;
 
 namespace Minecraft.Crafting.Components
 {
     public partial class Inventory
     {
+
         public bool IsDropped { get; set; } = false;
 
         public ObservableCollection<InventoryAction> Actions { get; set; }
@@ -47,15 +49,34 @@ namespace Minecraft.Crafting.Components
             InventoryModels = new List<InventoryModel>();
             for (int i = 0; i < InventoryPage.NBMAXITEM; i++)
             {
-                InventoryModels.Add(new InventoryModel());
+                InventoryModels.Add(new InventoryModel() { Position = i });
             }
         }
 
-        protected override async Task OnInitializedAsync()
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            /*Items = await DataInventoryService.GetAllItems();
-            ListNumberOfItemsByIndex = await DataInventoryService.GetListNumberOfItems();*/
-            await base.OnInitializedAsync();
+            try
+            {
+                InventoryModels = await DataInventoryService.GetInventory();
+                if (InventoryModels.Count == 0)
+                    await InitInventoryInAPI();
+            }
+            catch (Exception e)
+            {
+                await InitInventoryInAPI();
+            }
+            StateHasChanged();
+            await base.OnAfterRenderAsync(firstRender);
+        }
+
+        private async Task InitInventoryInAPI()
+        {
+            for (int i = 0; i < InventoryPage.NBMAXITEM; i++)
+            {
+                await DataInventoryService.AddInventoryModel(new InventoryModel() { Position = i });
+            }
+            InventoryModels = await DataInventoryService.GetInventory();
         }
 
         private void OnActionsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -68,23 +89,17 @@ namespace Minecraft.Crafting.Components
             InventoryModels.Insert(index, item);
         }
 
-        public void UpdateItemInventory(int index, InventoryModel itemInventory)
+        public async Task UpdateInventoryModel(InventoryModel inventoryModel)
         {
-            var item = InventoryModels.ElementAt(index);
-            item.ItemName = itemInventory.ItemName;
-            item.NumberItem = itemInventory.NumberItem;
+            await DataInventoryService.UpdateInventoryModel(inventoryModel);
         }
 
-        public void DeleteOlderItemInventory()
+        public async Task DeleteOlderItemInventory()
         {
             var olderInventoryModel = InventoryModels.ElementAt(CurrentIndexOfCurrentDragItem);
             olderInventoryModel.ItemName = null;
             olderInventoryModel.NumberItem = 0;
-        }
-
-        public async Task SaveInventory()
-        {
-            // await DataInventoryService.SaveInventory(Item, ListNumberOfItemsByIndex);
+            await DataInventoryService.UpdateInventoryModel(olderInventoryModel);
         }
     }
 }
