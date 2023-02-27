@@ -1,0 +1,31 @@
+﻿@using Minecraft.Crafting.Api.Models
+<DataGrid TItem="Item"
+        Data="@items"
+        ReadData="@OnReadData"
+        TotalItems="@totalItem"
+        PageSize="5"
+        ShowPager
+        @ondragstart="OnDragStart"
+        @ondragend="OnDragEnd"
+        SelectedRowChanged="@RowUpdated">
+    <DataGridColumn TItem="Item" Field="@nameof(Item.Id)" />
+    <DataGridColumn TItem="Item" Field="@nameof(Item.Id)">
+        <DisplayTemplate>
+            @if (File.Exists($"{WebHostEnvironment.WebRootPath}/images/{context.Name}.png"))
+            {
+                <img src="images/@(context.Name).png" class="img-thumbnail" title="@context.DisplayName" alt="@context.DisplayName" style="max-width: 150px" />
+            }
+            else
+            {
+                <img src="images/default.png" class="img-thumbnail" title="@context.DisplayName" alt="@context.DisplayName" style="max-width: 150px" />
+            }
+        </DisplayTemplate>
+    </DataGridColumn>
+    <DataGridColumn TItem="Item" Field="@nameof(Item.DisplayName)"/>
+    <DataGridColumn TItem="Item" Field="@nameof(Item.Id)">
+        <DisplayTemplate>
+            <a href="Edit/@(context.Id)" class="btn btn-primary"><i class="fa fa-edit"></i> Editer</a>
+            <button type="button" class="btn btn-primary" @onclick="() => OnDelete(context.Id)"><i class="fa fa-trash"></i> Supprimer</button>
+        </DisplayTemplate>
+    </DataGridColumn>
+</DataGrid>

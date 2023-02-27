@@ -1,4 +1,5 @@
-﻿using Minecraft.Crafting.Models;
+﻿using Minecraft.Crafting.Api.Models;
+using Minecraft.Crafting.Models;
 
 namespace Minecraft.Crafting.Components
 {

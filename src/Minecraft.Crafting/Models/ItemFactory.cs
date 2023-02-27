@@ -1,4 +1,6 @@
-﻿namespace Minecraft.Crafting.Models
+﻿using Minecraft.Crafting.Api.Models;
+
+namespace Minecraft.Crafting.Models
 {
     public static class ItemFactory
     {

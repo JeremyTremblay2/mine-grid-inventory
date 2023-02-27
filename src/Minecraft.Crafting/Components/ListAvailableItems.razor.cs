@@ -1,21 +1,24 @@
-﻿using Minecraft.Crafting.Models;
-using Blazored.LocalStorage;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using Blazorise;
 using Blazorise.DataGrid;
 using Microsoft.AspNetCore.Components;
-using Blazored.Modal.Services;
-using Minecraft.Crafting.Modals;
-using Blazored.Modal;
-using Minecraft.Crafting.Services.DataItemsService;
 using Minecraft.Crafting.Api.Models;
-using Microsoft.Extensions.Localization;
+using Minecraft.Crafting.Components;
+using Minecraft.Crafting.Modals;
+using Minecraft.Crafting.Models;
+using Minecraft.Crafting.Services.DataItemsService;
+using IModalService = Blazored.Modal.Services.IModalService;
 
-namespace Minecraft.Crafting.Pages
+namespace Minecraft.Crafting.Components
 {
-    public partial class List
+    public partial class ListAvailableItems
     {
         private List<Item> items;
 
         private int totalItem;
+
+        private Item? currentSelectedItem;
 
         [Inject]
         public IDataItemsService DataService { get; set; }
@@ -29,8 +32,11 @@ namespace Minecraft.Crafting.Pages
         [CascadingParameter]
         public IModalService Modal { get; set; }
 
-        [Inject]
-        public IStringLocalizer<List> Localizer { get; set; }
+        [CascadingParameter]
+        public Inventory Parent { get; set; }
+
+        [Parameter]
+        public bool NoDrop { get; set; }
 
         private async Task OnReadData(DataGridReadDataEventArgs<Item> e)
         {
@@ -63,6 +69,28 @@ namespace Minecraft.Crafting.Pages
 
             // Reload the page
             NavigationManager.NavigateTo("list", true);
+        }
+
+       
+
+        private void OnDragStart()
+        {
+            Parent.IsDropped = true;
+            Parent.CurrentDragItem = currentSelectedItem;
+            Parent.IsDragBetweenInventoryAndInventory = false;
+            Parent.IsDragBetweenListAndInventory = true;
+            Parent.CurrentIndexOfCurrentDragItem = -1;
+            Parent.Actions.Add(new InventoryAction { Action = "Drag Start", Item = currentSelectedItem }); ;
+        }
+
+        private void OnDragEnd()
+        {
+            Parent.IsDropped = false;
+        }
+
+        private void RowUpdated(Item newRow)
+        {
+            currentSelectedItem = newRow;
         }
     }
 }

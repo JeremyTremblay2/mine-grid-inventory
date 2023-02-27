@@ -1,9 +1,10 @@
-﻿using Minecraft.Crafting.Components;
+﻿using Minecraft.Crafting.Api.Models;
+using Minecraft.Crafting.Components;
 using Minecraft.Crafting.Models;
 
-namespace Minecraft.Crafting.Services
+namespace Minecraft.Crafting.Services.DataItemsService
 {
-    public interface IDataService
+    public interface IDataItemsService
     {
         Task Add(ItemModel model);
 

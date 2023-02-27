@@ -1,0 +1,15 @@
+﻿<div class="item"
+     ondragover="event.preventDefault();"
+     draggable="true"
+     @ondragstart="@OnDragStart"
+     @ondrop="@OnDrop"
+     @ondragend="@OnDragEnd">
+
+    @if (InventoryModel.ItemName != null)
+    {
+        <p>@InventoryModel.ItemName</p>
+        @if(InventoryModel.NumberItem > 0){
+            <p>@InventoryModel.NumberItem</p>
+        }
+    }
+</div>

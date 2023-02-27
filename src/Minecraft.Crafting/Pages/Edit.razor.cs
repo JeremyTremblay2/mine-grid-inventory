@@ -1,7 +1,7 @@
-﻿using Minecraft.Crafting.Models;
-using Minecraft.Crafting.Services;
+using Minecraft.Crafting.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Minecraft.Crafting.Services.DataItemsService;
 using Microsoft.Extensions.Localization;
 
 namespace Minecraft.Crafting.Pages
@@ -31,7 +31,7 @@ namespace Minecraft.Crafting.Pages
         private List<string> repairWith = new List<string>() { "oak_planks", "spruce_planks", "birch_planks", "jungle_planks", "acacia_planks", "dark_oak_planks", "crimson_planks", "warped_planks" };
 
         [Inject]
-        public IDataService DataService { get; set; }
+        public IDataItemsService DataService { get; set; }
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }

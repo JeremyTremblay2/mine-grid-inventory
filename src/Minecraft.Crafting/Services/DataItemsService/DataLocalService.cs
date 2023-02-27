@@ -2,17 +2,18 @@
 using Minecraft.Crafting.Models;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using Minecraft.Crafting.Api.Models;
 
-namespace Minecraft.Crafting.Services
+namespace Minecraft.Crafting.Services.DataItemsService
 {
-    public class DataLocalService : IDataService
+    public class DataLocalIService : IDataItemsService
     {
         private readonly HttpClient _http;
         private readonly ILocalStorageService _localStorage;
         private readonly NavigationManager _navigationManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public DataLocalService(
+        public DataLocalIService(
             ILocalStorageService localStorage,
             HttpClient http,
             IWebHostEnvironment webHostEnvironment,

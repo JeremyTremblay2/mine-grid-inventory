@@ -1,5 +1,4 @@
 using Blazored.LocalStorage;
-using Minecraft.Crafting.Services;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
@@ -9,6 +8,8 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using System.Globalization;
 using Blazored.Modal;
+using MinecraftCrafting.Services.DataInventoryService;
+using Minecraft.Crafting.Services.DataItemsService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,7 +42,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedUICultures = new List<CultureInfo> { new CultureInfo("en-US"), new CultureInfo("fr-FR") };
 });
 
-builder.Services.AddScoped<IDataService, DataApiService>();
+builder.Services.AddScoped<IDataInventoryService, DataLocalInventoryService>();
+builder.Services.AddScoped<IDataItemsService, DataApiService>();
 
 /*builder.Services.Configure<PositionOptions>(option =>
 {

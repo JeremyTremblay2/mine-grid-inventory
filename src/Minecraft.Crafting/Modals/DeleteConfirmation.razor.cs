@@ -1,8 +1,9 @@
-﻿using Minecraft.Crafting.Models;
-using Minecraft.Crafting.Services;
+using Minecraft.Crafting.Models;
 using Blazored.Modal.Services;
 using Blazored.Modal;
 using Microsoft.AspNetCore.Components;
+using Minecraft.Crafting.Services.DataItemsService;
+using Minecraft.Crafting.Api.Models;
 
 namespace Minecraft.Crafting.Modals
 {
@@ -12,7 +13,7 @@ namespace Minecraft.Crafting.Modals
         public BlazoredModalInstance ModalInstance { get; set; }
 
         [Inject]
-        public IDataService DataService { get; set; }
+        public IDataItemsService DataService { get; set; }
 
         [Parameter]
         public int Id { get; set; }

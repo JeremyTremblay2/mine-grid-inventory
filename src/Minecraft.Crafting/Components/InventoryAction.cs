@@ -3,7 +3,7 @@ using Minecraft.Crafting.Models;
 
 namespace Minecraft.Crafting.Components
 {
-    public class CraftingAction
+    public class InventoryAction
     {
         public string Action { get; set; }
         public int Index { get; set; }
