@@ -28,7 +28,7 @@ steps:
       commands:
         - cd src/
         - dotnet restore Minecraft.Crafting.sln
-        - dotnet sonarscanner begin /k:Minecraft.Crafting /d:sonar.host.url=$${PLUGIN_SONAR_HOST} /d:sonar.login=$${PLUGIN_SONAR_TOKEN} 
+        - dotnet sonarscanner begin /k:Minecraft.Crafting /d:sonar.host.url=$${PLUGIN_SONAR_HOST} /d:sonar.login=$${PLUGIN_SONAR_TOKEN}
         - dotnet build Minecraft.Crafting.sln -c Release --no-restore
         - dotnet publish Minecraft.Crafting.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
         - dotnet sonarscanner end /d:sonar.login=$${PLUGIN_SONAR_TOKEN}
