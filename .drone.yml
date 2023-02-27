@@ -1,0 +1,61 @@
+kind: pipeline
+type: docker
+name: default
+ 
+trigger:
+  event:
+    - push
+
+steps: 
+  - name: build
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    commands:
+      - cd src/
+      - dotnet restore Minecraft.Crafting.sln
+      - dotnet build Minecraft.Crafting.sln -c Release --no-restore
+      - dotnet publish Minecraft.Crafting.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
+
+  - name: tests
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    commands:
+      - cd src/
+      - dotnet restore Minecraft.Crafting.sln
+      - dotnet test Minecraft.Crafting.sln --no-restore
+    depends_on: [build]
+
+  - name: code-analysis
+    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dronesonarplugin-dotnet6
+    commands:
+      - cd src/
+      - dotnet restore Minecraft.Crafting.sln
+      - dotnet sonarscanner begin /k:Minecraft.Crafting /d:sonar.host.url=$${PLUGIN_SONAR_HOST} /d:sonar.login=$${PLUGIN_SONAR_TOKEN}
+      - dotnet build Minecraft.Crafting.sln -c Release --no-restore
+      - dotnet publish Minecraft.Crafting.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
+      - dotnet sonarscanner end /d:sonar.login=$${PLUGIN_SONAR_TOKEN}
+    secrets: [ Blazor_PerretTremblay_token ]
+    settings:
+        # accessible en ligne de commande par $${PLUGIN_SONAR_HOST}
+      sonar_host: https://codefirst.iut.uca.fr/sonar/
+        # accessible en ligne de commande par $${PLUGIN_SONAR_TOKEN}
+      sonar_token:
+        from_secret: Blazor_PerretTremblay_token
+    depends_on: [tests]
+
+  - name: generate-and-deploy-docs
+    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
+    failure: ignore
+    volumes:
+      - name: docs
+        path: /docs
+    commands:
+      - /entrypoint.sh
+    when:
+      branch:
+        - master
+    depends_on: [ build ]
+
+
+# The volumes declaration appear at the end of the file, after all steps
+volumes:
+- name: docs
+  temp: {}
