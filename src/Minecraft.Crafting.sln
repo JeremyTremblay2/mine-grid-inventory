@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minecraft.Crafting", "Minec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minecraft.Crafting.Api", "Minecraft.Crafting.Api\Minecraft.Crafting.Api.csproj", "{4EE38BA1-262E-4137-948F-0A88D349C4BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "Tests\UnitTests\UnitTests.csproj", "{60E0EDAA-C8CA-45A5-A2B7-5BB54A312692}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{60E0EDAA-C8CA-45A5-A2B7-5BB54A312692}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
