@@ -1,58 +1,51 @@
 ﻿using Blazored.LocalStorage;
-using Blazorise;
 using Minecraft.Crafting.Api.Models;
-using Minecraft.Crafting.Models;
-using Minecraft.Crafting.Pages;
+using MinecraftCrafting.Services.DataInventoryService;
+using System.Reflection.Metadata.Ecma335;
 
-namespace MinecraftCrafting.Services.DataInventoryService
+namespace Minecraft.Crafting.Services.DataInventoryService
 {
     public class DataLocalInventoryService : IDataInventoryService
     {
-        private readonly ILocalStorageService _localStorage;
-        private const string KEYITEMS = "inventoryItems";
-        private const string KEYNUMBERITEMS = "inventoryNumberItems";
+        private const string KEYINVENTORY = "inventory";
+        private ILocalStorageService _localStorageService;
 
-        public DataLocalInventoryService(ILocalStorageService localStorage)
+        public DataLocalInventoryService(ILocalStorageService localStorageService)
         {
-            _localStorage = localStorage;
+            _localStorageService = localStorageService;
         }
 
-        public async Task<IList<Item>> GetAllItems()
+        public async Task AddInventoryModel(InventoryModel inventoryModel)
         {
-            var _currentData = await _localStorage.GetItemAsync<List<Item>>(KEYITEMS);
-            if(_currentData == null)
-            {
-                _currentData = new List<Item>();
-                for (int i = 0; i < InventoryPage.NBMAXITEM; i++)
-                {
-                    _currentData.Add(new Item());
-                }
-            }
+            var inventory = await _localStorageService.GetItemAsync<List<InventoryModel>>(KEYINVENTORY);
+            if (inventory == null) inventory = new List<InventoryModel>();
 
-            return _currentData;
+            inventory.Add(inventoryModel);
+
+            await _localStorageService.SetItemAsync(KEYINVENTORY, inventory);
         }
 
-        public async Task<IList<int>> GetListNumberOfItems()
+        public async Task<List<InventoryModel>> GetInventory()
         {
-            var _currentData = await _localStorage.GetItemAsync<List<int>>(KEYNUMBERITEMS);
-            if (_currentData == null)
-            {
-                _currentData = new List<int>();
-                for (int i = 0; i < InventoryPage.NBMAXITEM; i++)
-                {
-                    _currentData.Add(0);
-                }
-            }
+            var res = await _localStorageService.GetItemAsync<List<InventoryModel>>(KEYINVENTORY);
+            if (res == null)
+                res = new List<InventoryModel>();
 
-            return _currentData;
+            return res;
         }
 
-        public async Task SaveInventory(IList<Item> items, IList<int> listNumberOfItems)
+        public async Task UpdateInventoryModel(InventoryModel inventoryModel)
         {
-            await _localStorage.SetItemAsync(KEYITEMS, items);
-            await _localStorage.SetItemAsync(KEYNUMBERITEMS, listNumberOfItems);
-        }
+            var inventory = await _localStorageService.GetItemAsync<List<InventoryModel>>(KEYINVENTORY);
+            if (inventory == null) return;
 
-        
+            var i = inventory.Where(inv => inv.Position == inventoryModel.Position).FirstOrDefault();
+            if (i == null) return;
+
+            i.ItemName = inventoryModel.ItemName;
+            i.NumberItem = inventoryModel.NumberItem;
+
+            await _localStorageService.SetItemAsync(KEYINVENTORY, inventory);
+        }
     }
 }

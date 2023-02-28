@@ -41,11 +41,15 @@ namespace Minecraft.Crafting.Components
             {
                 InventoryModel.ItemName = Parent.CurrentDragItem.DisplayName;
                 if (Parent.CurrentIndexOfCurrentDragItem < 0)
+                {
                     InventoryModel.NumberItem = 1;
+                    await Parent.UpdateItemInventory(InventoryModel);
+                }
                 else
                 {
                     InventoryModel.NumberItem += Parent.InventoryModels.ElementAt(Parent.CurrentIndexOfCurrentDragItem).NumberItem;
-                    Parent.DeleteOlderItemInventory();
+                    await Parent.UpdateItemInventory(InventoryModel);
+                    await Parent.DeleteOlderItemInventory();
                 }
             }
             else
@@ -53,14 +57,20 @@ namespace Minecraft.Crafting.Components
                 if (InventoryModel.ItemName.Equals(Parent.CurrentDragItem.DisplayName))
                 {
                     if (Parent.CurrentIndexOfCurrentDragItem < 0)
+                    {
                         InventoryModel.NumberItem++;
+                        await Parent.UpdateItemInventory(InventoryModel);
+                    }
                     else
                     {
                         InventoryModel.NumberItem += Parent.InventoryModels.ElementAt(Parent.CurrentIndexOfCurrentDragItem).NumberItem;
-                        Parent.DeleteOlderItemInventory();
+                        await Parent.UpdateItemInventory(InventoryModel);
+                        await Parent.DeleteOlderItemInventory();
                     }
                 }
             }
+
+            
 
             //await Parent.SaveInventory();
         }
@@ -81,12 +91,12 @@ namespace Minecraft.Crafting.Components
         /// <summary>
         /// Called when the user finishes dragging an item from this slot.
         /// </summary>
-        private void OnDragEnd()
+        private async void OnDragEnd()
         {
             Parent.Actions.Add(new InventoryAction { Action = "On drag end", Item = Parent.CurrentDragItem.Name, Index = this.Index });
             if (!Parent.IsDropped)
             {
-                Parent.DeleteOlderItemInventory();
+                await Parent.DeleteOlderItemInventory();
             }
             Parent.IsDropped = false;
             StateHasChanged();

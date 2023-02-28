@@ -35,7 +35,7 @@ namespace Minecraft.Crafting.Api.Controllers
         /// <returns>The async task.</returns>
         [HttpPost]
         [Route("")]
-        public Task AddToInventory(InventoryModel item)
+        public Task AddToInventory([FromBody]InventoryModel item)
         {
             var data = JsonSerializer.Deserialize<List<InventoryModel>>(System.IO.File.ReadAllText("Data/inventory.json"), _jsonSerializerOptions);
 
@@ -133,6 +133,7 @@ namespace Minecraft.Crafting.Api.Controllers
             }
 
             inventoryItem.ItemName = item.ItemName;
+            inventoryItem.NumberItem = item.NumberItem;
             inventoryItem.Position = item.Position;
 
             System.IO.File.WriteAllText("Data/inventory.json", JsonSerializer.Serialize(data, _jsonSerializerOptions));

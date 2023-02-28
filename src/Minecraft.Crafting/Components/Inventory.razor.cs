@@ -7,7 +7,6 @@ using Minecraft.Crafting.Pages;
 using Minecraft.Crafting.Api.Models;
 using Item = Minecraft.Crafting.Api.Models.Item;
 using Blazorise;
-using System;
 
 namespace Minecraft.Crafting.Components
 {
@@ -74,18 +73,34 @@ namespace Minecraft.Crafting.Components
             InventoryModels = new List<InventoryModel>();
             for (int i = 0; i < InventoryPage.NBMAXITEM; i++)
             {
-                InventoryModels.Add(new InventoryModel());
+                InventoryModels.Add(new InventoryModel() { Position = i });
             }
         }
 
-        /// <summary>
-        /// Initializes the component.
-        /// </summary>
-        protected override async Task OnInitializedAsync()
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            /*Items = await DataInventoryService.GetAllItems();
-            ListNumberOfItemsByIndex = await DataInventoryService.GetListNumberOfItems();*/
-            await base.OnInitializedAsync();
+            try
+            {
+                InventoryModels = await DataInventoryService.GetInventory();
+                if (InventoryModels.Count == 0)
+                    await InitInventoryInStorage();
+            }
+            catch (Exception e)
+            {
+                await InitInventoryInStorage();
+            }
+            StateHasChanged();
+            await base.OnAfterRenderAsync(firstRender);
+        }
+
+        private async Task InitInventoryInStorage()
+        {
+            for (int i = 0; i < InventoryPage.NBMAXITEM; i++)
+            {
+                await DataInventoryService.AddInventoryModel(new InventoryModel() { Position = i });
+            }
+            InventoryModels = await DataInventoryService.GetInventory();
         }
 
         private void OnActionsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -112,23 +127,21 @@ namespace Minecraft.Crafting.Components
         /// <summary>
         /// Updates an item in the inventory at the specified index.
         /// </summary>
-        /// <param name="index">The index of the item to update.</param>
-        /// <param name="itemInventory">The new inventory model for the item.</param>
-        public void UpdateItemInventory(int index, InventoryModel itemInventory)
+        /// <param name="inventoryModel">The new inventory model for the item.</param>
+        public async Task UpdateItemInventory(InventoryModel inventoryModel)
         {
-            var item = InventoryModels.ElementAt(index);
-            item.ItemName = itemInventory.ItemName;
-            item.NumberItem = itemInventory.NumberItem;
+            await DataInventoryService.UpdateInventoryModel(inventoryModel);
         }
 
         /// <summary>
         /// Deletes the item from the inventory model at the current index of the dragged item.
         /// </summary>
-        public void DeleteOlderItemInventory()
+        public async Task DeleteOlderItemInventory()
         {
             var olderInventoryModel = InventoryModels.ElementAt(CurrentIndexOfCurrentDragItem);
             olderInventoryModel.ItemName = null;
             olderInventoryModel.NumberItem = 0;
+            await DataInventoryService.UpdateInventoryModel(olderInventoryModel);
         }
 
         /// <summary>
