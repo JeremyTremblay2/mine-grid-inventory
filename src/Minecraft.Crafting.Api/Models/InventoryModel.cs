@@ -25,5 +25,10 @@ namespace Minecraft.Crafting.Api.Models
         /// Gets or sets the position.
         /// </summary>
         public int Position { get; set; }
+
+        /// <summary>
+        /// Gets or sets the image base64.
+        /// </summary>
+        public string ImageBase64 { get; set; }
     }
 }

@@ -141,6 +141,7 @@ namespace Minecraft.Crafting.Components
             var olderInventoryModel = InventoryModels.ElementAt(CurrentIndexOfCurrentDragItem);
             olderInventoryModel.ItemName = null;
             olderInventoryModel.NumberItem = 0;
+            olderInventoryModel.ImageBase64 = string.Empty;
             await DataInventoryService.UpdateInventoryModel(olderInventoryModel);
         }
 

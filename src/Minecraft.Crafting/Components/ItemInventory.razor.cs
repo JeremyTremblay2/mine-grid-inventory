@@ -40,6 +40,7 @@ namespace Minecraft.Crafting.Components
             if (InventoryModel.ItemName == null)
             {
                 InventoryModel.ItemName = Parent.CurrentDragItem.DisplayName;
+                InventoryModel.ImageBase64 = Parent.CurrentDragItem.ImageBase64;
                 if (Parent.CurrentIndexOfCurrentDragItem < 0)
                 {
                     InventoryModel.NumberItem = 1;
@@ -80,7 +81,7 @@ namespace Minecraft.Crafting.Components
         /// </summary>
         private void OnDragStart()
         {
-            Parent.CurrentDragItem = new Item() { DisplayName = InventoryModel.ItemName };
+            Parent.CurrentDragItem = new Item() { DisplayName = InventoryModel.ItemName, ImageBase64 = InventoryModel.ImageBase64 };
             Parent.CurrentIndexOfCurrentDragItem = Index;
             Parent.IsDragBetweenInventoryAndInventory = true;
             Parent.IsDragBetweenListAndInventory = false;

@@ -44,6 +44,7 @@ namespace Minecraft.Crafting.Services.DataInventoryService
 
             i.ItemName = inventoryModel.ItemName;
             i.NumberItem = inventoryModel.NumberItem;
+            i.ImageBase64 = inventoryModel.ImageBase64;
 
             await _localStorageService.SetItemAsync(KEYINVENTORY, inventory);
         }

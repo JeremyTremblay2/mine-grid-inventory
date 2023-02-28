@@ -1,8 +1,18 @@
-﻿.item {
+﻿
+.item {
     width: 64px;
     height: 64px;
     margin: 10px;
     padding: 10px;
     border: 1px solid;
     overflow: hidden;
+    box-shadow: 2px 2px grey;
+}
+
+.itemInventoryName {
+    font-size: 10px;
+}
+
+.itemInventoryNumber {
+    font-size: 10px;
 }
