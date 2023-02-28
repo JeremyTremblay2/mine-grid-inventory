@@ -13,14 +13,16 @@ namespace Minecraft.Crafting.Services.DataItemsService
         /// Http client to request the api.
         /// </summary>
         private readonly HttpClient _http;
+        private string api_url;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="http">Http client to request the api.</param>
-        public DataApiService(HttpClient http)
+        public DataApiService(HttpClient http, IConfiguration configuration)
         {
             _http = http;
+            api_url = configuration["API_URL"];
         }
 
         /// <inheritdoc/>
@@ -30,25 +32,25 @@ namespace Minecraft.Crafting.Services.DataItemsService
             var item = ItemFactory.Create(model);
 
             // Save the data
-            await _http.PostAsJsonAsync("https://localhost:7234/api/Crafting/", item);
+            await _http.PostAsJsonAsync($"{api_url}", item);
         }
 
         /// <inheritdoc/>
         public async Task<int> Count()
         {
-            return await _http.GetFromJsonAsync<int>("https://localhost:7234/api/Crafting/count");
+            return await _http.GetFromJsonAsync<int>($"{api_url}/count");
         }
 
         /// <inheritdoc/>
         public async Task<List<Item>> List(int currentPage, int pageSize)
         {
-            return await _http.GetFromJsonAsync<List<Item>>($"https://localhost:7234/api/Crafting/?currentPage={currentPage}&pageSize={pageSize}");
+            return await _http.GetFromJsonAsync<List<Item>>($"{api_url}/?currentPage={currentPage}&pageSize={pageSize}");
         }
 
         /// <inheritdoc/>
         public async Task<Item> GetById(int id)
         {
-            return await _http.GetFromJsonAsync<Item>($"https://localhost:7234/api/Crafting/{id}");
+            return await _http.GetFromJsonAsync<Item>($"{api_url}/{id}");
         }
 
         /// <inheritdoc/>
@@ -57,13 +59,13 @@ namespace Minecraft.Crafting.Services.DataItemsService
             // Get the item
             var item = ItemFactory.Create(model);
 
-            await _http.PutAsJsonAsync($"https://localhost:7234/api/Crafting/{id}", item);
+            await _http.PutAsJsonAsync($"{api_url}/{id}", item);
         }
 
         /// <inheritdoc/>
         public async Task Delete(int id)
         {
-            await _http.DeleteAsync($"https://localhost:7234/api/Crafting/{id}");
+            await _http.DeleteAsync($"{api_url}/{id}");
         }
     }
 }
