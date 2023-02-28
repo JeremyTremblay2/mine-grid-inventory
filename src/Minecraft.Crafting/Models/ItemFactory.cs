@@ -1,9 +1,19 @@
 ﻿using Minecraft.Crafting.Api.Models;
+using System;
 
 namespace Minecraft.Crafting.Models
 {
+    /// <summary>
+    /// A factory class that provides methods for creating, updating and converting between <see cref="Item"/> and <see cref="ItemModel"/>.
+    /// </summary>
     public static class ItemFactory
     {
+        /// <summary>
+        /// Converts an <see cref="Item"/> object and its image content to an <see cref="ItemModel"/> object.
+        /// </summary>
+        /// <param name="item">The <see cref="Item"/> object to be converted.</param>
+        /// <param name="imageContent">The image content of the item.</param>
+        /// <returns>An <see cref="ItemModel"/> object that represents the converted <see cref="Item"/> object.</returns>
         public static ItemModel ToModel(Item item, byte[] imageContent)
         {
             return new ItemModel
@@ -20,6 +30,11 @@ namespace Minecraft.Crafting.Models
             };
         }
 
+        /// <summary>
+        /// Creates a new <see cref="Item"/> object from an <see cref="ItemModel"/> object.
+        /// </summary>
+        /// <param name="model">The <see cref="ItemModel"/> object that represents the new <see cref="Item"/> object.</param>
+        /// <returns>A new <see cref="Item"/> object that is created from the <see cref="ItemModel"/> object.</returns>
         public static Item Create(ItemModel model)
         {
             return new Item
@@ -36,6 +51,11 @@ namespace Minecraft.Crafting.Models
             };
         }
 
+        /// <summary>
+        /// Updates the properties of an <see cref="Item"/> object with the values from an <see cref="ItemModel"/> object.
+        /// </summary>
+        /// <param name="item">The <see cref="Item"/> object to be updated.</param>
+        /// <param name="model">The <see cref="ItemModel"/> object that contains the new values for the <see cref="Item"/> object.</param>
         public static void Update(Item item, ItemModel model)
         {
             item.DisplayName = model.DisplayName;

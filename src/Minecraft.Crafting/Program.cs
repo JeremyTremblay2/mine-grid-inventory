@@ -44,7 +44,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 
 builder.Services.AddScoped<IDataItemsService, DataApiService>();
-builder.Services.AddScoped<IDataInventoryService, DataApiInventoryService>();
+builder.Services.AddScoped<IDataInventoryService, DataLocalInventoryService>();
 
 /*builder.Services.Configure<PositionOptions>(option =>
 {
