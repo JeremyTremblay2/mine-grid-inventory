@@ -3,9 +3,13 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Minecraft.Crafting.Services.DataItemsService;
 using Microsoft.Extensions.Localization;
+using System;
 
 namespace Minecraft.Crafting.Pages
 {
+    /// <summary>
+    /// Represents a page for editing an item.
+    /// </summary>
     public partial class Edit
     {
         [Parameter]
@@ -30,35 +34,59 @@ namespace Minecraft.Crafting.Pages
         /// </summary>
         private List<string> repairWith = new List<string>() { "oak_planks", "spruce_planks", "birch_planks", "jungle_planks", "acacia_planks", "dark_oak_planks", "crimson_planks", "warped_planks" };
 
+        /// <summary>
+        /// The data items service used to retrieve and manipulate items data.
+        /// </summary>
         [Inject]
         public IDataItemsService DataService { get; set; }
 
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-
+        /// <summary>
+        /// The hosting environment information service.
+        /// </summary>
         [Inject]
         public IWebHostEnvironment WebHostEnvironment { get; set; }
 
+        /// <summary>
+        /// The navigation manager used for navigating to different pages.
+        /// </summary>
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
+        /// <summary>
+        /// The localizer service used to provide localized strings.
+        /// </summary>
         [Inject]
         public IStringLocalizer<List> Localizer { get; set; }
 
+        /// <summary>
+        /// Called when the component has been initialized.
+        /// </summary>
         protected override async Task OnInitializedAsync()
         {
+            // Get the item to edit
             var item = await DataService.GetById(Id);
 
+            // Load the default image file
             var fileContent = await File.ReadAllBytesAsync($"{WebHostEnvironment.WebRootPath}/images/default.png");
 
             // Set the model with the item
             itemModel = ItemFactory.ToModel(item, fileContent);
         }
 
+        /// <summary>
+        /// Handles the submit event of the form.
+        /// </summary>
         private async void HandleValidSubmit()
         {
             await DataService.Update(Id, itemModel);
 
+            // Navigate to the list page
             NavigationManager.NavigateTo("list");
         }
 
+        /// <summary>
+        /// Loads the image file into the item model.
+        /// </summary>
         private async Task LoadImage(InputFileChangeEventArgs e)
         {
             // Set the content of the image to the model
@@ -69,6 +97,9 @@ namespace Minecraft.Crafting.Pages
             }
         }
 
+        /// <summary>
+        /// Handles a change to the enchant categories checkboxes.
+        /// </summary>
         private void OnEnchantCategoriesChange(string item, object checkedValue)
         {
             if ((bool)checkedValue)
@@ -87,6 +118,9 @@ namespace Minecraft.Crafting.Pages
             }
         }
 
+        /// <summary>
+        /// Handles a change to the repair with checkboxes.
+        /// </summary>
         private void OnRepairWithChange(string item, object checkedValue)
         {
             if ((bool)checkedValue)
