@@ -35,6 +35,7 @@ namespace Minecraft.Crafting.Components
         /// </summary>
         internal async void OnDrop()
         {
+            Parent.Actions.Add(new InventoryAction { Action = "On start", Item = Parent.CurrentDragItem.Name, Index = this.Index });
             Parent.IsDropped = true;
             if (InventoryModel.ItemName == null)
             {
@@ -73,6 +74,8 @@ namespace Minecraft.Crafting.Components
             Parent.CurrentIndexOfCurrentDragItem = Index;
             Parent.IsDragBetweenInventoryAndInventory = true;
             Parent.IsDragBetweenListAndInventory = false;
+
+            Parent.Actions.Add(new InventoryAction { Action = "On drag start", Item = Parent.CurrentDragItem.Name, Index = this.Index });
         }
 
         /// <summary>
@@ -80,6 +83,7 @@ namespace Minecraft.Crafting.Components
         /// </summary>
         private void OnDragEnd()
         {
+            Parent.Actions.Add(new InventoryAction { Action = "On drag end", Item = Parent.CurrentDragItem.Name, Index = this.Index });
             if (!Parent.IsDropped)
             {
                 Parent.DeleteOlderItemInventory();

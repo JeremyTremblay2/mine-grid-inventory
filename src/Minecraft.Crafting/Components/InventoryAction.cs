@@ -20,8 +20,8 @@ namespace Minecraft.Crafting.Components
         public int Index { get; set; }
 
         /// <summary>
-        /// The item to add or remove from the inventory.
+        /// Item dropped.
         /// </summary>
-        public Item Item { get; set; }
+        public string Item { get; set; }
     }
 }

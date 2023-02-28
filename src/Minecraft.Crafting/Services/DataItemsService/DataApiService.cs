@@ -65,11 +65,5 @@ namespace Minecraft.Crafting.Services.DataItemsService
         {
             await _http.DeleteAsync($"https://localhost:7234/api/Crafting/{id}");
         }
-
-        /// <inheritdoc/>
-        public async Task<List<CraftingRecipe>> GetRecipes()
-        {
-            return await _http.GetFromJsonAsync<List<CraftingRecipe>>("https://localhost:7234/api/Crafting/recipe");
-        }
     }
 }

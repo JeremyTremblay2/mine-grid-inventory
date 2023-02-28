@@ -55,13 +55,14 @@ namespace Minecraft.Crafting.Components
         /// Gets or sets the JavaScript runtime.
         /// </summary>
         [Inject]
-        internal IJSRuntime JavaScriptRuntime { get; set; }
+        public IDataInventoryService DataInventoryService { get; set; }
+
 
         /// <summary>
         /// Gets or sets the inventory service used to store and retrieve data.
         /// </summary>
         [Inject]
-        public IDataInventoryService DataInventoryService { get; set; }
+        public ILogger<Inventory> Logger { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Inventory"/> class.
@@ -89,7 +90,13 @@ namespace Minecraft.Crafting.Components
 
         private void OnActionsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            JavaScriptRuntime.InvokeVoidAsync("Crafting.AddActions", e.NewItems);
+            if(e.NewItems != null)
+            {
+                foreach (InventoryAction action in e.NewItems)
+                {
+                    Logger.LogInformation($"{action.Action} : ${action.Item} with index {action.Index}");
+                }
+            }
         }
 
         /// <summary>

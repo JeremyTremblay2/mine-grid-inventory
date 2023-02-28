@@ -51,7 +51,5 @@ namespace Minecraft.Crafting.Services.DataItemsService
         /// <param name="id">Item's id to delete.</param>
         /// <returns>A Task.</returns>
         Task Delete(int id);
-
-        Task<List<CraftingRecipe>> GetRecipes();
     }
 }
