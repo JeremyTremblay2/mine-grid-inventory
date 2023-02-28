@@ -80,12 +80,13 @@ namespace Minecraft.Crafting.Components
             Parent.IsDragBetweenInventoryAndInventory = false;
             Parent.IsDragBetweenListAndInventory = true;
             Parent.CurrentIndexOfCurrentDragItem = -1;
-            Parent.Actions.Add(new InventoryAction { Action = "Drag Start", Item = currentSelectedItem }); ;
+            Parent.Actions.Add(new InventoryAction { Action = "On drag start", Item = Parent.CurrentDragItem.Name });
         }
 
         private void OnDragEnd()
         {
             Parent.IsDropped = false;
+            Parent.Actions.Add(new InventoryAction { Action = "On drag end", Item = Parent.CurrentDragItem.Name });
         }
 
         private void RowUpdated(Item newRow)

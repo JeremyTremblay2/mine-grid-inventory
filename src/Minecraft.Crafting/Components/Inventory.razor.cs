@@ -31,14 +31,12 @@ namespace Minecraft.Crafting.Components
         public bool IsDragBetweenListAndInventory { get; set; }
         public bool IsDragBetweenInventoryAndInventory { get; set; }
 
-        /// <summary>
-        /// Gets or sets the java script runtime.
-        /// </summary>
-        [Inject]
-        internal IJSRuntime JavaScriptRuntime { get; set; }
-
         [Inject]
         public IDataInventoryService DataInventoryService { get; set; }
+
+
+        [Inject]
+        public ILogger<Inventory> Logger { get; set; }
 
         public Inventory()
         {
@@ -60,7 +58,13 @@ namespace Minecraft.Crafting.Components
 
         private void OnActionsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            JavaScriptRuntime.InvokeVoidAsync("Crafting.AddActions", e.NewItems);
+            if(e.NewItems != null)
+            {
+                foreach (InventoryAction action in e.NewItems)
+                {
+                    Logger.LogInformation($"{action.Action} : ${action.Item} with index {action.Index}");
+                }
+            }
         }
 
         public void AddItem(InventoryModel item, int index)

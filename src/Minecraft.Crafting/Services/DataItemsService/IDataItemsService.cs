@@ -17,7 +17,5 @@ namespace Minecraft.Crafting.Services.DataItemsService
         Task Update(int id, ItemModel model);
 
         Task Delete(int id);
-
-        Task<List<CraftingRecipe>> GetRecipes();
     }
 }
