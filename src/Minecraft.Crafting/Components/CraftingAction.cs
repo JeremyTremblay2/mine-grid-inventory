@@ -5,12 +5,12 @@ using System;
 namespace Minecraft.Crafting.Components
 {
     /// <summary>
-    /// Represents an action that can be performed on an inventory.
+    /// Represents an action that can be performed during the crafting process.
     /// </summary>
-    public class InventoryAction
+    public class CraftingAction
     {
         /// <summary>
-        /// The type of action to perform, such as "add" or "remove".
+        /// The type of action to perform, such as "craft" or "uncraft".
         /// </summary>
         public string Action { get; set; }
 
@@ -20,8 +20,8 @@ namespace Minecraft.Crafting.Components
         public int Index { get; set; }
 
         /// <summary>
-        /// Item dropped.
+        /// The item to use in the crafting action.
         /// </summary>
-        public string Item { get; set; }
+        public Item Item { get; set; }
     }
 }

@@ -6,6 +6,9 @@ using Minecraft.Crafting.Api.Models;
 
 namespace Minecraft.Crafting.Services.DataItemsService
 {
+    /// <summary>
+    /// Service for the loading and the saving of items.
+    /// </summary>
     public class DataLocalIService : IDataItemsService
     {
         private readonly HttpClient _http;
@@ -13,6 +16,13 @@ namespace Minecraft.Crafting.Services.DataItemsService
         private readonly NavigationManager _navigationManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="localStorage">LocalStorage.</param>
+        /// <param name="http">Http client;</param>
+        /// <param name="webHostEnvironment">Web environnement.</param>
+        /// <param name="navigationManager">Navgigation manager.</param>
         public DataLocalIService(
             ILocalStorageService localStorage,
             HttpClient http,
@@ -25,6 +35,7 @@ namespace Minecraft.Crafting.Services.DataItemsService
             _navigationManager = navigationManager;
         }
 
+        /// <inheritdoc/>
         public async Task Add(ItemModel model)
         {
             // Get the current data
@@ -40,6 +51,7 @@ namespace Minecraft.Crafting.Services.DataItemsService
             await _localStorage.SetItemAsync("data", currentData);
         }
 
+        /// <inheritdoc/>
         public async Task<int> Count()
         {
             // Load data from the local storage
@@ -56,6 +68,7 @@ namespace Minecraft.Crafting.Services.DataItemsService
             return (await _localStorage.GetItemAsync<Item[]>("data")).Length;
         }
 
+        /// <inheritdoc/>
         public async Task<List<Item>> List(int currentPage, int pageSize)
         {
             // Load data from the local storage
@@ -72,6 +85,7 @@ namespace Minecraft.Crafting.Services.DataItemsService
             return (await _localStorage.GetItemAsync<Item[]>("data")).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
         }
 
+        /// <inheritdoc/>
         public async Task<Item> GetById(int id)
         {
             // Get the current data
@@ -89,6 +103,7 @@ namespace Minecraft.Crafting.Services.DataItemsService
             return item;
         }
 
+        /// <inheritdoc/>
         public async Task Update(int id, ItemModel model)
         {
             // Get the current data
@@ -110,6 +125,7 @@ namespace Minecraft.Crafting.Services.DataItemsService
             await _localStorage.SetItemAsync("data", currentData);
         }
 
+        /// <inheritdoc/>
         public async Task Delete(int id)
         {
             // Get the current data
