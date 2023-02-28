@@ -7,9 +7,15 @@
 
     @if (InventoryModel.ItemName != null)
     {
-        <p>@InventoryModel.ItemName</p>
+        @if(string.IsNullOrWhiteSpace(InventoryModel.ImageBase64)){
+             <p class="itemInventoryName">@InventoryModel.ItemName</p>
+        }
+        else{
+            <img src="data:image/png;base64, @(InventoryModel.ImageBase64)" class="img-thumbnail" title="@InventoryModel.ItemName" alt="@InventoryModel.ItemName" style="min-width: 40px; max-width: 50px" />
+        }
+       
         @if(InventoryModel.NumberItem > 0){
-            <p>@InventoryModel.NumberItem</p>
+            <p class="itemInventoryNumber">@InventoryModel.NumberItem</p>
         }
     }
 </div>

@@ -40,6 +40,7 @@ namespace Minecraft.Crafting.Components
             if (InventoryModel.ItemName == null)
             {
                 InventoryModel.ItemName = Parent.CurrentDragItem.DisplayName;
+                InventoryModel.ImageBase64 = Parent.CurrentDragItem.ImageBase64;
                 if (Parent.CurrentIndexOfCurrentDragItem < 0)
                 {
                     InventoryModel.NumberItem = 1;
