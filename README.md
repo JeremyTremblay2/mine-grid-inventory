@@ -35,13 +35,19 @@ These features will be available in the future, when the project will be complet
 
 * Start Visual Studio.
 * Open the solution in `src/` named `Blazor_PerretTremblay`.
+* In Visual Studio, click on the solution on the `Solution Explorer` > `Properties`.
+* Select `Multiple starting projects` and for each project (`Minecraft.Crafting` and `Minecraft.Crafting.Api`), select `Start`.
 * Run the project inside Visual Studio and enjoy!
+
+## 🧱 Structure of the project
+
+You can look at the [Technical Documentation](./doc/technical_documentation.md) file to learn more about the architecture and the structuration of this project.
 
 ## 📌 Documentation & developper guidance
 
 You can find more information about the technical choices, conception and some sketches in the [Wiki](https://codefirst.iut.uca.fr/git/louis.perret/Blazor_PerretTremblay/wiki) of this project.
 
-Also, look at the `doc` folder at the root of this repository!
+Also, look at the `doc` folder at the root of this repository! 
 
 ## 👤 Authors
 
@@ -60,8 +66,3 @@ Also, look at the `doc` folder at the root of this repository!
 We want to leave the possibility to other people to work on this project, to improve it and to make it grow, that's why we decided to place it under MIT license.
 
 > Read more about the [MIT licence](https://opensource.org/licenses/MIT).
-
-
-
-
-
